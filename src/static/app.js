@@ -546,24 +546,22 @@ document.addEventListener("DOMContentLoaded", () => {
           }, 300);
         }
       });
+
+      // Set up event delegation for share buttons (only once)
+      const shareButtonsContainer = shareModal.querySelector(".share-buttons");
+      shareButtonsContainer.addEventListener("click", (event) => {
+        const btn = event.target.closest(".share-btn");
+        if (btn) {
+          const platform = btn.dataset.platform;
+          handleShare(platform, shareModal._currentActivityName, shareModal._currentShareText, shareModal._currentShareUrl);
+        }
+      });
     }
 
-    // Set up share button handlers using event delegation
-    const shareButtonsContainer = shareModal.querySelector(".share-buttons");
-    
-    // Remove existing event listener if any
-    const oldContainer = shareButtonsContainer;
-    const newContainer = oldContainer.cloneNode(true);
-    oldContainer.parentNode.replaceChild(newContainer, oldContainer);
-    
-    // Add single event listener to container
-    newContainer.addEventListener("click", (event) => {
-      const btn = event.target.closest(".share-btn");
-      if (btn) {
-        const platform = btn.dataset.platform;
-        handleShare(platform, name, shareText, shareUrl);
-      }
-    });
+    // Store current activity data for the event handler
+    shareModal._currentActivityName = name;
+    shareModal._currentShareText = shareText;
+    shareModal._currentShareUrl = shareUrl;
 
     // Show the modal
     shareModal.classList.remove("hidden");
