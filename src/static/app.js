@@ -607,7 +607,7 @@ document.addEventListener("DOMContentLoaded", () => {
               closeShareModal();
             })
             .catch((err) => {
-              console.error("Failed to copy link:", err);
+              console.error("Failed to copy link");
               showMessage("Failed to copy link. Please try again.", "error");
             });
         } else {
@@ -699,7 +699,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </ul>
       </div>
       <div class="activity-card-actions">
-        <button class="share-button tooltip" title="Share this activity">
+        <button class="share-button tooltip" title="Share this activity" aria-label="Share ${name} activity">
           🔗 Share
           <span class="tooltip-text">Share this activity with friends</span>
         </button>
