@@ -49,17 +49,21 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentUser = null;
 
   // Dark mode functionality
+  function updateDarkModeIcon(isDarkMode) {
+    darkModeIcon.textContent = isDarkMode ? "☀️" : "🌙";
+  }
+
   function initializeDarkMode() {
     // Check if user has a dark mode preference saved
     const isDarkMode = localStorage.getItem("darkMode") === "true";
     
     if (isDarkMode) {
       document.body.classList.add("dark-mode");
-      darkModeIcon.textContent = "☀️";
     } else {
       document.body.classList.remove("dark-mode");
-      darkModeIcon.textContent = "🌙";
     }
+    
+    updateDarkModeIcon(isDarkMode);
   }
 
   function toggleDarkMode() {
@@ -69,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("darkMode", isDarkMode);
     
     // Update icon
-    darkModeIcon.textContent = isDarkMode ? "☀️" : "🌙";
+    updateDarkModeIcon(isDarkMode);
   }
 
   // Event listener for dark mode toggle

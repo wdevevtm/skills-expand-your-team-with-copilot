@@ -30,6 +30,10 @@
   --error-light: #ffebee;
   --info: #0c5460;
   --info-light: #d1ecf1;
+
+  /* Layout variables */
+  --dark-mode-toggle-size: 40px;
+  --dark-mode-toggle-spacing: 15px;
 }
 
 /* Dark mode color palette */
@@ -703,12 +707,12 @@ footer {
 #dark-mode-toggle {
   position: absolute;
   top: 10px;
-  right: 15px;
+  right: var(--dark-mode-toggle-spacing);
   background-color: rgba(255, 255, 255, 0.2);
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: var(--dark-mode-toggle-size);
+  height: var(--dark-mode-toggle-size);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -725,5 +729,5 @@ footer {
 
 /* Adjust user-controls position when dark mode toggle is present */
 header #user-controls {
-  right: 65px;
+  right: calc(var(--dark-mode-toggle-size) + var(--dark-mode-toggle-spacing) + 10px);
 }
