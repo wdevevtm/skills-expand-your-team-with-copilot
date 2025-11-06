@@ -553,15 +553,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const btn = event.target.closest(".share-btn");
         if (btn) {
           const platform = btn.dataset.platform;
-          handleShare(platform, shareModal._currentActivityName, shareModal._currentShareText, shareModal._currentShareUrl);
+          handleShare(platform, shareModal.dataset.activityName, shareModal.dataset.shareText, shareModal.dataset.shareUrl);
         }
       });
     }
 
-    // Store current activity data for the event handler
-    shareModal._currentActivityName = name;
-    shareModal._currentShareText = shareText;
-    shareModal._currentShareUrl = shareUrl;
+    // Store current activity data using dataset API
+    shareModal.dataset.activityName = name;
+    shareModal.dataset.shareText = shareText;
+    shareModal.dataset.shareUrl = shareUrl;
 
     // Show the modal
     shareModal.classList.remove("hidden");
@@ -609,11 +609,11 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch((err) => {
               console.error("Failed to copy link:", err);
-              showMessage("Failed to copy link. Please copy manually: " + shareUrl, "error");
+              showMessage("Failed to copy link. Please try again.", "error");
             });
         } else {
           // Fallback for browsers without clipboard API
-          showMessage("Clipboard not supported. Link: " + shareUrl, "info");
+          showMessage("Clipboard not supported. Please copy the link manually.", "info");
         }
         break;
     }
@@ -700,7 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </ul>
       </div>
       <div class="activity-card-actions">
-        <button class="share-button tooltip" data-activity="${name}" title="Share this activity">
+        <button class="share-button tooltip" title="Share this activity">
           🔗 Share
           <span class="tooltip-text">Share this activity with friends</span>
         </button>
