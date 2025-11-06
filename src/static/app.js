@@ -548,19 +548,21 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Set up share button handlers
-    const shareButtons = shareModal.querySelectorAll(".share-btn");
-    shareButtons.forEach((btn) => {
-      const newBtn = btn.cloneNode(true);
-      btn.parentNode.replaceChild(newBtn, btn);
-    });
-
-    const newShareButtons = shareModal.querySelectorAll(".share-btn");
-    newShareButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
+    // Set up share button handlers using event delegation
+    const shareButtonsContainer = shareModal.querySelector(".share-buttons");
+    
+    // Remove existing event listener if any
+    const oldContainer = shareButtonsContainer;
+    const newContainer = oldContainer.cloneNode(true);
+    oldContainer.parentNode.replaceChild(newContainer, oldContainer);
+    
+    // Add single event listener to container
+    newContainer.addEventListener("click", (event) => {
+      const btn = event.target.closest(".share-btn");
+      if (btn) {
         const platform = btn.dataset.platform;
         handleShare(platform, name, shareText, shareUrl);
-      });
+      }
     });
 
     // Show the modal
@@ -594,22 +596,27 @@ document.addEventListener("DOMContentLoaded", () => {
         )}&body=${encodedText}`;
         break;
       case "copy":
-        // Copy link to clipboard
-        navigator.clipboard
-          .writeText(shareUrl)
-          .then(() => {
-            showMessage("Link copied to clipboard!", "success");
-            // Close the share modal
-            const shareModal = document.getElementById("share-modal");
-            shareModal.classList.remove("show");
-            setTimeout(() => {
-              shareModal.classList.add("hidden");
-            }, 300);
-          })
-          .catch((err) => {
-            console.error("Failed to copy link:", err);
-            showMessage("Failed to copy link", "error");
-          });
+        // Copy link to clipboard - check if clipboard API is available
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(shareUrl)
+            .then(() => {
+              showMessage("Link copied to clipboard!", "success");
+              // Close the share modal
+              const shareModal = document.getElementById("share-modal");
+              shareModal.classList.remove("show");
+              setTimeout(() => {
+                shareModal.classList.add("hidden");
+              }, 300);
+            })
+            .catch((err) => {
+              console.error("Failed to copy link:", err);
+              showMessage("Failed to copy link. Please copy manually: " + shareUrl, "error");
+            });
+        } else {
+          // Fallback for browsers without clipboard API
+          showMessage("Clipboard not supported. Link: " + shareUrl, "info");
+        }
         break;
     }
   }
