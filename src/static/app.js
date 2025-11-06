@@ -498,6 +498,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Close share modal helper function
+  function closeShareModal() {
+    const shareModal = document.getElementById("share-modal");
+    if (shareModal) {
+      shareModal.classList.remove("show");
+      setTimeout(() => {
+        shareModal.classList.add("hidden");
+      }, 300);
+    }
+  }
+
   // Show sharing options in a modal
   function showShareOptions(name, details, shareText, shareUrl) {
     // Create share modal if it doesn't exist
@@ -511,16 +522,16 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="close-share-modal">&times;</span>
           <h3>Share Activity</h3>
           <div class="share-buttons">
-            <button class="share-btn facebook-btn" data-platform="facebook">
+            <button class="share-btn facebook-btn" data-platform="facebook" aria-label="Share on Facebook">
               📘 Facebook
             </button>
-            <button class="share-btn twitter-btn" data-platform="twitter">
+            <button class="share-btn twitter-btn" data-platform="twitter" aria-label="Share on Twitter">
               🐦 Twitter
             </button>
-            <button class="share-btn email-btn" data-platform="email">
+            <button class="share-btn email-btn" data-platform="email" aria-label="Share via Email">
               ✉️ Email
             </button>
-            <button class="share-btn copy-btn" data-platform="copy">
+            <button class="share-btn copy-btn" data-platform="copy" aria-label="Copy link to clipboard">
               📋 Copy Link
             </button>
           </div>
@@ -530,20 +541,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Close button event
       const closeBtn = shareModal.querySelector(".close-share-modal");
-      closeBtn.addEventListener("click", () => {
-        shareModal.classList.remove("show");
-        setTimeout(() => {
-          shareModal.classList.add("hidden");
-        }, 300);
-      });
+      closeBtn.addEventListener("click", closeShareModal);
 
       // Close when clicking outside
       shareModal.addEventListener("click", (event) => {
         if (event.target === shareModal) {
-          shareModal.classList.remove("show");
-          setTimeout(() => {
-            shareModal.classList.add("hidden");
-          }, 300);
+          closeShareModal();
         }
       });
 
@@ -601,11 +604,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(() => {
               showMessage("Link copied to clipboard!", "success");
               // Close the share modal
-              const shareModal = document.getElementById("share-modal");
-              shareModal.classList.remove("show");
-              setTimeout(() => {
-                shareModal.classList.add("hidden");
-              }, 300);
+              closeShareModal();
             })
             .catch((err) => {
               console.error("Failed to copy link:", err);
